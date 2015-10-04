@@ -1,0 +1,17 @@
+{
+  "name": "3d_life",
+  "version": "1.0.0",
+  "description": "3d graphics experiments with ES2015, Babel, and Three.js",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nick Myers",
+  "license": "WTFPL",
+  "dependencies": {
+    "three": ">= 0.72.0",
+    "babel": ">= 5.8.23",
+    "browserify": ">= 11.2.0",
+    "beefy": ">= 2.1.5"
+  }
+}
