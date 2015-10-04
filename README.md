@@ -11,8 +11,8 @@ How it works
 You need git and npm installed.
 
 ```sh
-$ git clone [this repository]
-$ cd [this repository]
+$ git clone https://github.com/nickmyers217/es6_threejs_stuff ./cool
+$ cd cool
 $ sudo npm install
 ```
 At this point create your code in the js folder (don't have support for multiple modules just yet). If you're not feeling creative, just try out the default stuff that's already there. When you're ready to try it out use the makefile, or if you don't like UNIX Makefiles, run its commands manually or make your own shell script.
@@ -26,7 +26,6 @@ Go to your browser and open up localhost (port 1337 by default).
  - Get support for multiple modules (not sure if I want to use es6 or node modules yet)
  - Find a way to trigger the bundling and transpiling upon file save, so that we can leverage BEEFY's live refresh for some real time coding fun (imagine creating a 3d scene in real time without really ever compiling or building anything)
  - Stats.js for fps
- - dat.GUI for real time control of state
 
 ----
 Licensed with WTFPL
