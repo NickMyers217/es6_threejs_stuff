@@ -24,8 +24,7 @@ Go to your browser and open up localhost (port 1337 by default).
 ### Todos
 
  - Get support for multiple modules (not sure if I want to use es6 or node modules yet)
-License
- - Find a way to trigger the bundling and transpiling upon file save, so that we can leverage BEEFY's live refresh for some real time coding fun (imagine creating a 3d scene in real time without really ever compiling or building anything).
+ - Find a way to trigger the bundling and transpiling upon file save, so that we can leverage BEEFY's live refresh for some real time coding fun (imagine creating a 3d scene in real time without really ever compiling or building anything)
 
 ----
 Licensed with WTFPL
