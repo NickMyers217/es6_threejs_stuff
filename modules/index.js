@@ -1,11 +1,12 @@
 import {Util} from './util/util.js';
 const THREE = require('three'),
-      dat = require('dat-gui');
+      dat = require('dat-gui'),
+      Stats = require('stats-js');
 
 class Example {
     constructor () {
         this.renderer = ((r) => {
-            r.setClearColor(0x4444ff);
+            r.setClearColor(0x0000aa);
             r.setSize(window.innerWidth, window.innerHeight);
             r.shadowMap.enabled = true;
             r.shadowMapSoft = true;
@@ -69,6 +70,15 @@ class Example {
             g.add(this.guiControls, 'rotZ', 0, 1);
             return g;
         })(new dat.GUI());
+
+        this.stats = ((s) => {
+            s.setMode(0);
+            s.domElement.style.position = 'absolute';
+            s.domElement.style.left = '0px';
+            s.domElement.style.top = '0px';
+            document.body.appendChild(s.domElement);
+            return s;
+        })(new Stats());
     }
 
     update () {
@@ -78,12 +88,17 @@ class Example {
     }
 
     render () {
+        this.stats.begin();
+
         this.update();
         this.renderer.render(this.scene, this.camera);
         requestAnimationFrame(() => this.render());
+
+        this.stats.end();
     }
 
     run () {
+        console.log(this.renderer);
         requestAnimationFrame(() => this.render());
     }
 }
