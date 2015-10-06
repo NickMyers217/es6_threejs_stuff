@@ -3,8 +3,10 @@
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-var THREE = require('three');
-var dat = require('dat-gui');
+var _utilUtilJs = require('./util/util.js');
+
+var THREE = require('three'),
+    dat = require('dat-gui');
 
 var Example = (function () {
     function Example() {
@@ -14,7 +16,7 @@ var Example = (function () {
 
         this.renderer = (function () {
             var r = new THREE.WebGLRenderer();
-            r.setClearColor(0xdddddd);
+            r.setClearColor(0x4444ff);
             r.setSize(window.innerWidth, window.innerHeight);
             r.shadowMap.enabled = true;
             r.shadowMapSoft = true;
@@ -109,20 +111,30 @@ var Example = (function () {
 
 window.onload = function () {
     var ex = new Example();
-
-    window.addEventListener('resize', function () {
-        ex.camera.aspect = window.innerWidth / window.innerHeight;
-        ex.camera.updateProjectionMatrix();
-        ex.renderer.setSize(window.innerWidth, window.innerHeight);
-    }, false);
-
+    _utilUtilJs.Util.resize(ex);
     ex.run();
 };
 
-},{"dat-gui":2,"three":5}],2:[function(require,module,exports){
+},{"./util/util.js":2,"dat-gui":3,"three":6}],2:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+var Util = {
+    resize: function resize(threeScene) {
+        window.addEventListener('resize', function () {
+            threeScene.camera.aspect = window.innerWidth / window.innerHeight;
+            threeScene.camera.updateProjectionMatrix();
+            threeScene.renderer.setSize(window.innerWidth, window.innerHeight);
+        }, false);
+    }
+};
+
+exports.Util = Util;
+
+},{}],3:[function(require,module,exports){
 module.exports = require('./vendor/dat.gui')
 module.exports.color = require('./vendor/dat.color')
-},{"./vendor/dat.color":3,"./vendor/dat.gui":4}],3:[function(require,module,exports){
+},{"./vendor/dat.color":4,"./vendor/dat.gui":5}],4:[function(require,module,exports){
 /**
  * dat-gui JavaScript Controller Library
  * http://code.google.com/p/dat-gui
@@ -878,7 +890,7 @@ dat.color.math = (function () {
 })(),
 dat.color.toString,
 dat.utils.common);
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 /**
  * dat-gui JavaScript Controller Library
  * http://code.google.com/p/dat-gui
@@ -4539,7 +4551,7 @@ dat.dom.CenteredDiv = (function (dom, common) {
 dat.utils.common),
 dat.dom.dom,
 dat.utils.common);
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 var self = self || {};// File:src/Three.js
 
 /**

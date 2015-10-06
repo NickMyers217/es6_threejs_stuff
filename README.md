@@ -20,7 +20,7 @@ At this point create your code in the modules folder. Feel free to use es6 style
 ```sh
 $ grunt
 ```
-Grunt is now monitoring your files and building them. You can go ahead and open up the ./dist/index.html in your browser. Grunt will continue to run in the background and watch for changes to any of your modules, so that it can transpile again when neccessary. If you just want grunt to build the files one and not monitor you can try this.
+Grunt is now monitoring your files and building them. You can go ahead and open up the ./dist/index.html in your browser. Grunt will continue to run in the background and watch for changes to any of your modules, so that it can transpile again when neccessary. If you just want grunt to build the files once and not monitor you can try this.
 ```sh
 $ grunt build
 ```

@@ -1,11 +1,11 @@
-const THREE = require('three');
-const dat = require('dat-gui');
+const THREE = require('three'),
+      dat = require('dat-gui');
 
 class Example {
     constructor () {
         this.renderer = (() => {
             let r = new THREE.WebGLRenderer();
-            r.setClearColor(0xdddddd);
+            r.setClearColor(0x4444ff);
             r.setSize(window.innerWidth, window.innerHeight);
             r.shadowMap.enabled = true;
             r.shadowMapSoft = true;
@@ -20,7 +20,7 @@ class Example {
         })();
         this.cube = (() => {
             let geometry = new THREE.BoxGeometry(5, 5, 5),
-            material = new THREE.MeshLambertMaterial({color: 0xff3300}),
+            material = new THREE.MeshLambertMaterial({color: 0x33ff00}),
             c = new THREE.Mesh(geometry, material);
             c.position.x = 2.5;
             c.position.y = 4;

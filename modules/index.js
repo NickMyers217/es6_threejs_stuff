@@ -1,11 +1,12 @@
-var THREE = require('three');
-var dat = require('dat-gui');
+import {Util} from './util/util.js';
+const THREE = require('three'),
+      dat = require('dat-gui');
 
 class Example {
     constructor () {
         this.renderer = (() => {
             let r = new THREE.WebGLRenderer();
-            r.setClearColor(0xdddddd);
+            r.setClearColor(0x4444ff);
             r.setSize(window.innerWidth, window.innerHeight);
             r.shadowMap.enabled = true;
             r.shadowMapSoft = true;
@@ -90,12 +91,6 @@ class Example {
 
 window.onload = () => {
     let ex = new Example();
-    
-    window.addEventListener('resize', () => {
-        ex.camera.aspect = window.innerWidth / window.innerHeight;  
-        ex.camera.updateProjectionMatrix();
-        ex.renderer.setSize(window.innerWidth, window.innerHeight);
-    }, false);
-
+    Util.resize(ex);
     ex.run();
 };
