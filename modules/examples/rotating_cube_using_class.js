@@ -1,74 +1,74 @@
+import {Util} from './util/util.js';
 const THREE = require('three'),
       dat = require('dat-gui');
 
 class Example {
     constructor () {
-        this.renderer = (() => {
-            let r = new THREE.WebGLRenderer();
+        this.renderer = ((r) => {
             r.setClearColor(0x4444ff);
             r.setSize(window.innerWidth, window.innerHeight);
             r.shadowMap.enabled = true;
             r.shadowMapSoft = true;
             document.body.appendChild(r.domElement);
             return r;
-        })();
+        })(new THREE.WebGLRenderer());
+
         this.axis = new THREE.AxisHelper(10);
-        this.grid = (() => {
-            let g = new THREE.GridHelper(50, 5);
+
+        this.grid = ((g) => {
             g.setColors(new THREE.Color("rgb(255,0,0)"), 0x000000);
             return g;
-        })();
-        this.cube = (() => {
-            let geometry = new THREE.BoxGeometry(5, 5, 5),
-            material = new THREE.MeshLambertMaterial({color: 0x33ff00}),
-            c = new THREE.Mesh(geometry, material);
+        })(new THREE.GridHelper(50, 5));
+
+        this.cube = ((geometry, material) => {
+            let c = new THREE.Mesh(geometry, material);
             c.position.x = 2.5;
             c.position.y = 4;
             c.position.z = 2.5;
             c.castShadow = true;
             return c;
-        })();
-        this.plane = (() => {
-            let geometry = new THREE.PlaneGeometry(30, 30, 30),
-            material = new THREE.MeshLambertMaterial({color: 0xffffff}),
-            p = new THREE.Mesh(geometry, material);
+        })(new THREE.BoxGeometry(5, 5, 5), new THREE.MeshLambertMaterial({color: 0x33ff00}));
+
+        this.plane = ((geometry, material) => {
+            let p = new THREE.Mesh(geometry, material);
             p.rotation.x = -0.5 * Math.PI;
             p.receiveShadow = true;
             return p;
-        })();
-        this.spotLight = (() => {
-            let sl = new THREE.SpotLight(0xffffff);
+        })(new THREE.PlaneGeometry(30, 30, 30), new THREE.MeshLambertMaterial({color: 0xffffff}));
+
+        this.spotLight = ((sl) => {
             sl.castShadow = true;
             sl.position.set(15, 30, 50);
             return sl;
-        })();
-        this.scene = (() => {
-            let s = new THREE.Scene();
+        })(new THREE.SpotLight(0xffffff));
+
+        this.scene = ((s) => {
             s.add(this.axis);
             s.add(this.cube);
             s.add(this.plane);
             s.add(this.spotLight);
             s.add(this.grid);
             return s;
-        })();
-        this.camera = (() => {
-            let c = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        })(new THREE.Scene());
+
+        this.camera = ((c) => {
             c.position.set(40, 40, 40);
             c.lookAt(this.scene.position);
             return c;
-        })();
+        })(new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000));
+
         this.guiControls = {
             rotX: 0,
             rotY: 0,
             rotZ: 0
         };
-        this.datGUI = (() => {
-            let g = new dat.GUI();
+
+        this.datGUI = ((g) => {
             g.add(this.guiControls, 'rotX', 0, 1);
             g.add(this.guiControls, 'rotY', 0, 1);
             g.add(this.guiControls, 'rotZ', 0, 1);
             return g;
-        })();
+        })(new dat.GUI());
     }
 
     update () {
@@ -90,12 +90,6 @@ class Example {
 
 window.onload = () => {
     let ex = new Example();
-    
-    window.addEventListener('resize', () => {
-        ex.camera.aspect = window.innerWidth / window.innerHeight;  
-        ex.camera.updateProjectionMatrix();
-        ex.renderer.setSize(window.innerWidth, window.innerHeight);
-    }, false);
-
+    Util.resize(ex);
     ex.run();
 };

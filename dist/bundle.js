@@ -14,72 +14,71 @@ var Example = (function () {
 
         _classCallCheck(this, Example);
 
-        this.renderer = (function () {
-            var r = new THREE.WebGLRenderer();
+        this.renderer = (function (r) {
             r.setClearColor(0x4444ff);
             r.setSize(window.innerWidth, window.innerHeight);
             r.shadowMap.enabled = true;
             r.shadowMapSoft = true;
             document.body.appendChild(r.domElement);
             return r;
-        })();
+        })(new THREE.WebGLRenderer());
+
         this.axis = new THREE.AxisHelper(10);
-        this.grid = (function () {
-            var g = new THREE.GridHelper(50, 5);
+
+        this.grid = (function (g) {
             g.setColors(new THREE.Color("rgb(255,0,0)"), 0x000000);
             return g;
-        })();
-        this.cube = (function () {
-            var geometry = new THREE.BoxGeometry(5, 5, 5),
-                material = new THREE.MeshLambertMaterial({ color: 0x33ff00 }),
-                c = new THREE.Mesh(geometry, material);
+        })(new THREE.GridHelper(50, 5));
+
+        this.cube = (function (geometry, material) {
+            var c = new THREE.Mesh(geometry, material);
             c.position.x = 2.5;
             c.position.y = 4;
             c.position.z = 2.5;
             c.castShadow = true;
             return c;
-        })();
-        this.plane = (function () {
-            var geometry = new THREE.PlaneGeometry(30, 30, 30),
-                material = new THREE.MeshLambertMaterial({ color: 0xffffff }),
-                p = new THREE.Mesh(geometry, material);
+        })(new THREE.BoxGeometry(5, 5, 5), new THREE.MeshLambertMaterial({ color: 0x33ff00 }));
+
+        this.plane = (function (geometry, material) {
+            var p = new THREE.Mesh(geometry, material);
             p.rotation.x = -0.5 * Math.PI;
             p.receiveShadow = true;
             return p;
-        })();
-        this.spotLight = (function () {
-            var sl = new THREE.SpotLight(0xffffff);
+        })(new THREE.PlaneGeometry(30, 30, 30), new THREE.MeshLambertMaterial({ color: 0xffffff }));
+
+        this.spotLight = (function (sl) {
             sl.castShadow = true;
             sl.position.set(15, 30, 50);
             return sl;
-        })();
-        this.scene = (function () {
-            var s = new THREE.Scene();
+        })(new THREE.SpotLight(0xffffff));
+
+        this.scene = (function (s) {
             s.add(_this.axis);
             s.add(_this.cube);
             s.add(_this.plane);
             s.add(_this.spotLight);
             s.add(_this.grid);
             return s;
-        })();
-        this.camera = (function () {
-            var c = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        })(new THREE.Scene());
+
+        this.camera = (function (c) {
             c.position.set(40, 40, 40);
             c.lookAt(_this.scene.position);
             return c;
-        })();
+        })(new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000));
+
         this.guiControls = {
             rotX: 0,
             rotY: 0,
             rotZ: 0
         };
-        this.datGUI = (function () {
-            var g = new dat.GUI();
+
+        this.datGUI = (function (g) {
             g.add(_this.guiControls, 'rotX', 0, 1);
             g.add(_this.guiControls, 'rotY', 0, 1);
             g.add(_this.guiControls, 'rotZ', 0, 1);
             return g;
-        })();
+        })(new dat.GUI());
     }
 
     Example.prototype.update = function update() {
