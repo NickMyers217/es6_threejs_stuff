@@ -31,6 +31,6 @@ Have fun.
   - Textures
   - More types of controls
   - Shaders
-  - Specular lighting
+
 ----
 Licensed with WTFPL
