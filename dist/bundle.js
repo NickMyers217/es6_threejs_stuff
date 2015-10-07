@@ -182,10 +182,6 @@ var _utilThreexJs = require('./util/threex.js');
 
 var _examplesRotating_cubeJs = require('./examples/rotating_cube.js');
 
-var THREE = require('three'),
-    dat = require('dat-gui'),
-    Stats = require('stats-js');
-
 window.onload = function () {
     var ex = new _examplesRotating_cubeJs.RotatingCube();
     _utilThreexJs.THREEx.WindowResize(ex.renderer, ex.camera);
@@ -193,7 +189,7 @@ window.onload = function () {
     ex.run();
 };
 
-},{"./examples/rotating_cube.js":2,"./util/threex.js":4,"dat-gui":5,"stats-js":8,"three":10}],4:[function(require,module,exports){
+},{"./examples/rotating_cube.js":2,"./util/threex.js":4}],4:[function(require,module,exports){
 /** @namespace */
 'use strict';
 
