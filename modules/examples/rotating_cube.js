@@ -1,87 +1,72 @@
-const THREE = require('three');
-const dat = require('dat-gui');
+import { Util } from '../util/util.js';
+import { Example } from './example.js';
 
-window.onload = () => {
-    let renderer = (() => {
-            let r = new THREE.WebGLRenderer();
-            r.setClearColor(0xdddddd);
-            r.setSize(window.innerWidth, window.innerHeight);
-            r.shadowMap.enabled = true;
-            r.shadowMapSoft = true;
-            document.body.appendChild(r.domElement);
-            return r;
-        })(),
-        axis = new THREE.AxisHelper(10),
-        grid = (() => {
-            let g = new THREE.GridHelper(50, 5);
+const THREE = require('three'),
+      dat = require('dat-gui'),
+      Stats = require('stats-js');
+
+// A rotating cube scene that inherits from the base example scene
+class RotatingCube extends Example {
+    constructor () {
+        // Call the parent constructor
+        super();
+
+        // Create an axis
+        this.axis = new THREE.AxisHelper(10);
+        
+        // Create a grid
+        this.grid = ((g) => {
             g.setColors(new THREE.Color("rgb(255,0,0)"), 0x000000);
             return g;
-        })(),
-        cube = (() => {
-            let geometry = new THREE.BoxGeometry(5, 5, 5),
-                material = new THREE.MeshLambertMaterial({color: 0xff3300}),
-                c = new THREE.Mesh(geometry, material);
+        })(new THREE.GridHelper(50, 5));
+
+        // Create a cube
+        this.cube = ((geometry, material) => {
+            let c = new THREE.Mesh(geometry, material);
             c.position.x = 2.5;
             c.position.y = 4;
             c.position.z = 2.5;
             c.castShadow = true;
             return c;
-        })(),
-        plane = (() => {
-            let geometry = new THREE.PlaneGeometry(30, 30, 30),
-                material = new THREE.MeshLambertMaterial({color: 0xffffff}),
-                p = new THREE.Mesh(geometry, material);
+        })(new THREE.BoxGeometry(5, 5, 5), new THREE.MeshLambertMaterial({color: 0x33ff00}));
+
+        // Create a plane
+        this.plane = ((geometry, material) => {
+            let p = new THREE.Mesh(geometry, material);
             p.rotation.x = -0.5 * Math.PI;
             p.receiveShadow = true;
             return p;
-        })(),
-        spotLight = (() => {
-            let sl = new THREE.SpotLight(0xffffff);
+        })(new THREE.PlaneGeometry(30, 30, 30), new THREE.MeshLambertMaterial({color: 0xffffff}));
+
+        // Create a spotlight
+        this.spotLight = ((sl) => {
             sl.castShadow = true;
             sl.position.set(15, 30, 50);
             return sl;
-        })(),
-        scene = (() => {
-            let s = new THREE.Scene();
-            s.add(axis);
-            s.add(cube);
-            s.add(plane);
-            s.add(spotLight);
-            s.add(grid);
-            return s;
-        })(),
-        camera = (() => {
-            let c = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-            c.position.set(40, 40, 40);
-            c.lookAt(scene.position);
-            return c;
-        })(),
-        guiControls = {
-            rotX: 0,
-            rotY: 0,
-            rotZ: 0
-        },
-        datGUI = (() => {
-            let g = new dat.GUI();
-            g.add(guiControls, 'rotX', 0, 1);
-            g.add(guiControls, 'rotY', 0, 1);
-            g.add(guiControls, 'rotZ', 0, 1);
-            return g;
-        })();
-    
-    let render = function () {
-        cube.rotation.x += guiControls.rotX;
-        cube.rotation.y += guiControls.rotY;
-        cube.rotation.z += guiControls.rotZ;
-        renderer.render(scene, camera);
-        requestAnimationFrame(render);
-    };
+        })(new THREE.SpotLight(0xffffff));
 
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;  
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    }, false);
+        // Add everything to the scene
+        this.scene.add(this.axis);
+        this.scene.add(this.cube);
+        this.scene.add(this.plane);
+        this.scene.add(this.spotLight);
+        this.scene.add(this.grid);
 
-    requestAnimationFrame(render);
-};
+        // Setup the gui
+        this.guiControls.rotX = 0;
+        this.guiControls.rotY = 0;
+        this.guiControls.rotZ = 0;
+        this.datGUI.add(this.guiControls, 'rotX', 0, 1);
+        this.datGUI.add(this.guiControls, 'rotY', 0, 1);
+        this.datGUI.add(this.guiControls, 'rotZ', 0, 1);
+    }
+
+    // Overwrite the parent update method
+    update () {
+        this.cube.rotation.x += this.guiControls.rotX;
+        this.cube.rotation.y += this.guiControls.rotY;
+        this.cube.rotation.z += this.guiControls.rotZ;
+    }
+}
+
+export { RotatingCube };
