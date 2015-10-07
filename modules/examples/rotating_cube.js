@@ -1,9 +1,9 @@
-import { Util } from '../util/util.js';
 import { Example } from './example.js';
 
 const THREE = require('three'),
       dat = require('dat-gui'),
-      Stats = require('stats-js');
+      Stats = require('stats-js'),
+      OrbitControls = require('three-orbit-controls')(THREE);
 
 // A rotating cube scene that inherits from the base example scene
 class RotatingCube extends Example {
@@ -45,6 +45,9 @@ class RotatingCube extends Example {
             return sl;
         })(new THREE.SpotLight(0xffffff));
 
+        // Controls
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+
         // Add everything to the scene
         this.scene.add(this.axis);
         this.scene.add(this.cube);
@@ -66,6 +69,7 @@ class RotatingCube extends Example {
         this.cube.rotation.x += this.guiControls.rotX;
         this.cube.rotation.y += this.guiControls.rotY;
         this.cube.rotation.z += this.guiControls.rotZ;
+        this.controls.update();
     }
 }
 

@@ -1,4 +1,3 @@
-import { Util } from '../util/util.js';
 const THREE = require('three'),
       dat = require('dat-gui'),
       Stats = require('stats-js');
@@ -24,7 +23,7 @@ class Example {
             c.position.set(40, 40, 40);
             c.lookAt(this.scene.position);
             return c;
-        })(new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000));
+        })(new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000));
 
         // dat.GUI
         this.guiControls = {};
