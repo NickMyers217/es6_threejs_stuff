@@ -27,7 +27,10 @@ $ grunt build
 Have fun.
 
 ### Todos
- - Stats.js for fps
-
+  - Skybox
+  - Textures
+  - More types of controls
+  - Shaders
+  - Specular lighting
 ----
 Licensed with WTFPL

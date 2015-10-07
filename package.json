@@ -7,7 +7,10 @@
   "license": "WTFPL",
   "dependencies": {
     "three": ">= 0.72.0",
-    "dat-gui": ">= 0.5.0"
+    "dat-gui": ">= 0.5.0",
+    "stats-js": ">= 1.0.0-alpha1",
+    "three-orbit-controls": ">= 71.0.0",
+    "three-first-person-controls": ">= 0.2.1"
   },
   "devDependencies": {
     "grunt": ">= 0.4.5",
