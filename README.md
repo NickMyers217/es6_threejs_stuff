@@ -26,6 +26,10 @@ $ grunt build
 ```
 Have fun.
 
+
+### Tips
+  - If you are going to use textures that that are loaded inbetween files, you'll discover that security measures your browser takes prevent that. To solve this, go [here](https://github.com/mrdoob/three.js/wiki/How-to-run-things-locally).
+
 ### Todos
   - Skybox
   - Textures

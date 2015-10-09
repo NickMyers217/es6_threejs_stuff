@@ -1,8 +1,8 @@
 import { THREEx } from './util/threex.js';
-import { RotatingCube } from './examples/rotating_cube.js';
+import { Template as ExScene } from './examples/Template.js';
 
 window.onload = () => {
-    let ex = new RotatingCube();
+    let ex = new ExScene();
     THREEx.WindowResize(ex.renderer, ex.camera);
     THREEx.FullScreen.bindKey();
     ex.run();

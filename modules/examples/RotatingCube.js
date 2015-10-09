@@ -1,4 +1,4 @@
-import { Example } from './example.js';
+import { BaseScene } from './BaseScene.js';
 
 const THREE = require('three'),
       dat = require('dat-gui'),
@@ -6,7 +6,7 @@ const THREE = require('three'),
       OrbitControls = require('three-orbit-controls')(THREE);
 
 // A rotating cube scene that inherits from the base example scene
-class RotatingCube extends Example {
+class RotatingCube extends BaseScene {
     constructor () {
         // Call the parent constructor
         super();

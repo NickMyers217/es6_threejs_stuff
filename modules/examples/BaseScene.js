@@ -3,7 +3,7 @@ const THREE = require('three'),
       Stats = require('stats-js');
 
 // A base class for an example scene
-class Example {
+class BaseScene {
     constructor () {
         // The renderer for the scene
         this.renderer = ((r) => {
@@ -23,7 +23,7 @@ class Example {
             c.position.set(40, 40, 40);
             c.lookAt(this.scene.position);
             return c;
-        })(new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000));
+        })(new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20000));
 
         // dat.GUI
         this.guiControls = {};
@@ -33,8 +33,7 @@ class Example {
         this.stats = ((s) => {
             s.setMode(0);
             s.domElement.style.position = 'absolute';
-            s.domElement.style.left = '0px';
-            s.domElement.style.top = '0px';
+            s.domElement.style.bottom = '0px';
             document.body.appendChild(s.domElement);
             return s;
         })(new Stats());
@@ -58,4 +57,4 @@ class Example {
     }
 }
 
-export { Example };
+export { BaseScene };

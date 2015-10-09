@@ -11,11 +11,11 @@ var THREE = require('three'),
 
 // A base class for an example scene
 
-var Example = (function () {
-    function Example() {
+var BaseScene = (function () {
+    function BaseScene() {
         var _this = this;
 
-        _classCallCheck(this, Example);
+        _classCallCheck(this, BaseScene);
 
         // The renderer for the scene
         this.renderer = (function (r) {
@@ -35,7 +35,7 @@ var Example = (function () {
             c.position.set(40, 40, 40);
             c.lookAt(_this.scene.position);
             return c;
-        })(new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000));
+        })(new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20000));
 
         // dat.GUI
         this.guiControls = {};
@@ -45,16 +45,15 @@ var Example = (function () {
         this.stats = (function (s) {
             s.setMode(0);
             s.domElement.style.position = 'absolute';
-            s.domElement.style.left = '0px';
-            s.domElement.style.top = '0px';
+            s.domElement.style.bottom = '0px';
             document.body.appendChild(s.domElement);
             return s;
         })(new Stats());
     }
 
-    Example.prototype.update = function update() {};
+    BaseScene.prototype.update = function update() {};
 
-    Example.prototype.render = function render() {
+    BaseScene.prototype.render = function render() {
         var _this2 = this;
 
         this.stats.begin();
@@ -68,7 +67,7 @@ var Example = (function () {
         this.stats.end();
     };
 
-    Example.prototype.run = function run() {
+    BaseScene.prototype.run = function run() {
         var _this3 = this;
 
         requestAnimationFrame(function () {
@@ -76,10 +75,10 @@ var Example = (function () {
         });
     };
 
-    return Example;
+    return BaseScene;
 })();
 
-exports.Example = Example;
+exports.BaseScene = BaseScene;
 
 },{"dat-gui":5,"stats-js":8,"three":10}],2:[function(require,module,exports){
 'use strict';
@@ -90,106 +89,95 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var _exampleJs = require('./example.js');
+var _BaseSceneJs = require('./BaseScene.js');
 
 var THREE = require('three'),
     dat = require('dat-gui'),
     Stats = require('stats-js'),
     OrbitControls = require('three-orbit-controls')(THREE);
 
-// A rotating cube scene that inherits from the base example scene
+// A simple scene that can be used as a template
 
-var RotatingCube = (function (_Example) {
-    _inherits(RotatingCube, _Example);
+var Template = (function (_BaseScene) {
+    _inherits(Template, _BaseScene);
 
-    function RotatingCube() {
-        _classCallCheck(this, RotatingCube);
+    function Template() {
+        _classCallCheck(this, Template);
 
         // Call the parent constructor
-        _Example.call(this);
+        _BaseScene.call(this);
 
-        // Create an axis
-        this.axis = new THREE.AxisHelper(10);
+        // Add a light
+        this.light = (function (l) {
+            l.position.set(100, 250, 100);
+            return l;
+        })(new THREE.PointLight(0xffffff));
 
-        // Create a grid
-        this.grid = (function (g) {
-            g.setColors(new THREE.Color("rgb(255,0,0)"), 0x000000);
-            return g;
-        })(new THREE.GridHelper(50, 5));
+        // Create a textured plane for the floor
+        this.floor = (function () {
+            // Remember that filepaths to images are relative to the BUNDLE NOT THIS FILE!
+            var floorTex = new THREE.ImageUtils.loadTexture('../res/images/checkerboard.jpg');
+            floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping;
+            floorTex.repeat.set(10, 10);
 
-        // Create a cube
-        this.cube = (function (geometry, material) {
-            var c = new THREE.Mesh(geometry, material);
-            c.position.x = 2.5;
-            c.position.y = 4;
-            c.position.z = 2.5;
-            c.castShadow = true;
-            return c;
-        })(new THREE.BoxGeometry(5, 5, 5), new THREE.MeshLambertMaterial({ color: 0x33ff00 }));
+            var mat = new THREE.MeshBasicMaterial({ map: floorTex, side: THREE.DoubleSide }),
+                geo = new THREE.PlaneGeometry(1000, 1000, 10, 10),
+                floor = new THREE.Mesh(geo, mat);
 
-        // Create a plane
-        this.plane = (function (geometry, material) {
-            var p = new THREE.Mesh(geometry, material);
-            p.rotation.x = -0.5 * Math.PI;
-            p.receiveShadow = true;
-            return p;
-        })(new THREE.PlaneGeometry(30, 30, 30), new THREE.MeshLambertMaterial({ color: 0xffffff }));
+            floor.position.y = -0.5;
+            floor.rotation.x = Math.PI / 2;
 
-        // Create a spotlight
-        this.spotLight = (function (sl) {
-            sl.castShadow = true;
-            sl.position.set(15, 30, 50);
-            return sl;
-        })(new THREE.SpotLight(0xffffff));
+            return floor;
+        })();
+
+        // Create a sphere
+        this.sphere = (function (geo, mat) {
+            var sphere = new THREE.Mesh(geo, mat);
+
+            sphere.position.set(0, 40, 0);
+
+            return sphere;
+        })(new THREE.SphereGeometry(30, 32, 16), new THREE.MeshLambertMaterial({ color: 0x000088 }));
 
         // Controls
         this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
         // Add everything to the scene
-        this.scene.add(this.axis);
-        this.scene.add(this.cube);
-        this.scene.add(this.plane);
-        this.scene.add(this.spotLight);
-        this.scene.add(this.grid);
+        this.scene.add(this.light);
+        this.scene.add(this.floor);
+        this.scene.add(this.sphere);
 
-        // Setup the gui
-        this.guiControls.rotX = 0;
-        this.guiControls.rotY = 0;
-        this.guiControls.rotZ = 0;
-        this.datGUI.add(this.guiControls, 'rotX', 0, 1);
-        this.datGUI.add(this.guiControls, 'rotY', 0, 1);
-        this.datGUI.add(this.guiControls, 'rotZ', 0, 1);
+        // Move the camera to the correct starting position and direction
+        this.camera.position.set(0, 150, 400);
+        this.camera.lookAt(this.scene.position);
     }
 
     // Overwrite the parent update method
 
-    RotatingCube.prototype.update = function update() {
-        this.cube.rotation.x += this.guiControls.rotX;
-        this.cube.rotation.y += this.guiControls.rotY;
-        this.cube.rotation.z += this.guiControls.rotZ;
+    Template.prototype.update = function update() {
         this.controls.update();
     };
 
-    return RotatingCube;
-})(_exampleJs.Example);
+    return Template;
+})(_BaseSceneJs.BaseScene);
 
-exports.RotatingCube = RotatingCube;
+exports.Template = Template;
 
-},{"./example.js":1,"dat-gui":5,"stats-js":8,"three":10,"three-orbit-controls":9}],3:[function(require,module,exports){
+},{"./BaseScene.js":1,"dat-gui":5,"stats-js":8,"three":10,"three-orbit-controls":9}],3:[function(require,module,exports){
 'use strict';
 
 var _utilThreexJs = require('./util/threex.js');
 
-var _examplesRotating_cubeJs = require('./examples/rotating_cube.js');
+var _examplesTemplateJs = require('./examples/Template.js');
 
 window.onload = function () {
-    var ex = new _examplesRotating_cubeJs.RotatingCube();
+    var ex = new _examplesTemplateJs.Template();
     _utilThreexJs.THREEx.WindowResize(ex.renderer, ex.camera);
     _utilThreexJs.THREEx.FullScreen.bindKey();
     ex.run();
 };
 
-},{"./examples/rotating_cube.js":2,"./util/threex.js":4}],4:[function(require,module,exports){
+},{"./examples/Template.js":2,"./util/threex.js":4}],4:[function(require,module,exports){
 /** @namespace */
 'use strict';
 
